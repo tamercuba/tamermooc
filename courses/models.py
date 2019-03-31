@@ -1,5 +1,5 @@
 from django.db import models
-# from django.urls import reverse
+from django.urls import reverse
 
 class CourseManager(models.Manager):
     def search(self, query):                                                        #essa função search do custom manager busca query no nome OU na descriçao
@@ -28,8 +28,8 @@ class Course(models.Model):
         return(self.name)
 
 
-    #def get_absolute_url(self):
-    #    return reverse('courses:details', kwargs={'slug': self.slug})
+    def get_absolute_url(self):
+        return reverse('courses:details', kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name        = 'Curso'
