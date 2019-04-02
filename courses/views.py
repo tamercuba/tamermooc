@@ -15,8 +15,18 @@ def details(request, slug):
 
     course = get_object_or_404(Course, slug=slug)
     template_name = 'courses/details.html'
-    context = {
-        'course': course,
-        'form': ContactCourse()
-    }
+    context = {}
+    if request.method == 'POST':
+        form = ContactCourse(request.POST)
+        if form.is_valid():
+            context['is_valid']= True
+            form.send_mail(course)
+            #print(form.cleaned_data['name'])
+            #print(form.cleaned_data['email'])
+            #print(form.cleaned_data['message'])
+            form = ContactCourse()
+    else:
+        form = ContactCourse()
+    context['course']=course
+    context['form']=form
     return render(request, template_name, context)
