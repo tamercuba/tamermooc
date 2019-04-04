@@ -6,14 +6,17 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from .models import PasswordReset
 from core.utils import generate_hash_key
-
+from django.contrib import messages
+from courses.models import Enrollment
 
 User = get_user_model()
 
 @login_required
 def dashboard(request):
     template_name = 'dashboard.html'
-    return render(request, template_name)
+    context = {}
+    context['enrollments'] = Enrollment.objects.filter(user=request.user)
+    return render(request, template_name, context)
 
 def register(request):
     template_name = 'register.html'
@@ -62,8 +65,10 @@ def edit(request):
         form = EditAccountForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            form = EditAccountForm(request.POST, instance=request.user)
-            context['seccess'] = True
+            messages.success(request, 'Os dados da sua conta foram alterados com sucesso')
+            return redirect('accounts:dashboard')
+            #form = EditAccountForm(request.POST, instance=request.user)
+            #context['seccess'] = True
     else:
         form = EditAccountForm(instance=request.user)
     context['form'] = form

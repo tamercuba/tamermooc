@@ -6,6 +6,7 @@
     <meta name="description" content="Simple MOOC - Uma simples plataforma de ensino a distância" />
     <title>Tâmer MOOC</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
 <body>
@@ -26,6 +27,15 @@
     </div>
 </div>
 <div class="content">
+    {% if messages %}
+    <div class="pure-g-r content-ribbon">
+        <aside class="pure-u-1">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+        </aside>
+    </div>
+    {% endif %}
     {% block content %}{% endblock %}
     <div class="footer">
         Tâmer MOOC - Uma simples plataforma de ensino a distância
