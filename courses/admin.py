@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Course
+from .models import Course, Enrollment, Announcement, Comment
 
 class CourseAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'start_date', 'created_at']
@@ -8,3 +8,4 @@ class CourseAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Course,CourseAdmin)
+admin.site.register([Enrollment, Announcement, Comment])

@@ -269,7 +269,7 @@ aside a, aside a:visited {
     color: rgb(169, 226, 255);
 }
 .well {
-    border: 1px solid #ddd;
-    padding: 0em 1em 1em 1em;
-    margin-bottom: 1.5em;
+    border: 1.5px solid rgb(135, 135, 135);
+    padding: 1em 1em 1em 1em;
+    margin-bottom: 2em;
 }

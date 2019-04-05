@@ -57,6 +57,9 @@ class Enrollment(models.Model):
     created_at    = models.DateTimeField('Criado em', auto_now_add=True)
     apdated_at    = models.DateTimeField('Atualizado em', auto_now = True)
 
+    def __str__(self):
+        return self.user
+
     def active(self):
         self.status = 1
         self.save()
@@ -68,3 +71,40 @@ class Enrollment(models.Model):
         verbose_name        = 'Inscrição'
         verbose_name_plural = 'Inscrições'
         unique_together     = (('user', 'course'),)
+
+class Announcement(models.Model):
+    course  = models.ForeignKey(Course, verbose_name='Curso', related_name='announcements' ,on_delete=models.NOT_PROVIDED)
+    title   = models.CharField('Título', max_length=100)
+    content = models.TextField('Conteúdo')
+
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+    updated_at = models.DateTimeField('Atualizado em', auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name        = 'Anúncio'
+        verbose_name_plural = 'Anúncios'
+        ordering            = ['-created_at']
+
+
+
+class Comment(models.Model):
+    announcement = models.ForeignKey(
+        Announcement, verbose_name='Anúnciio', related_name='comments',on_delete=models.NOT_PROVIDED
+    )
+    user         = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Usuário',on_delete=models.NOT_PROVIDED)
+    comment      = models.TextField('Comentário')
+
+
+    created_at  = models.DateTimeField('Criado em', auto_now_add=True)
+    updated_at  = models.DateTimeField('Atualizado em', auto_now=True)
+
+    def __str__(self):
+        return self.user
+
+    class Meta:
+        verbose_name        = 'Comentário'
+        verbose_name_plural = 'Comentários'
+        ordering            = ['created_at']
