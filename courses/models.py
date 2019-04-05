@@ -1,6 +1,8 @@
-from django.db import models
-from django.urls import reverse
-from django.conf import settings
+from django.db       import models
+from django.urls     import reverse
+from django.conf     import settings
+from core.mail       import send_mail_template
+from django.dispatch import receiver
 
 class CourseManager(models.Manager):
     def search(self, query):                                                        #essa função search do custom manager busca query no nome OU na descriçao
@@ -101,10 +103,26 @@ class Comment(models.Model):
     created_at  = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at  = models.DateTimeField('Atualizado em', auto_now=True)
 
-    def __str__(self):
-        return self.user
-
     class Meta:
         verbose_name        = 'Comentário'
         verbose_name_plural = 'Comentários'
         ordering            = ['created_at']
+
+
+    def __str__(self):
+        return self.user
+
+    @receiver(models.signals.post_save, sender=Announcement)
+    def post_save_announcement(instance, created,**kwargs):
+        if created:
+            template_name = 'courses/announcement_mail.html'
+            subject = instance.title
+            context = {'announcement': instance}
+
+            enrollments = Enrollment.objects.filter(course=instance.course, status=1)
+            for enrollment in enrollments:
+                recipient_list = [enrollment.user.email]
+                send_mail_template(subject, template_name, context, recipient_list)
+
+
+#models.signals.post_save.connect(post_save_announcement, sender=Announcement, dispatch_uid='post_save_announcement')
