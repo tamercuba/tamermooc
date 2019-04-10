@@ -37,10 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    #APPS
     'accounts',
-
     'core',
     'courses',
+    'forum', 
+    #LIBS
+    'taggit',
 ]
 
 MIDDLEWARE = [
